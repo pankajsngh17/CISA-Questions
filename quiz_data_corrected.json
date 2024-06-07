@@ -321,6 +321,7 @@
   },
   {
       "question": "An IS auditor is reviewing the contract for a customer relationship management (CRM) system containing personal identifiable information (Pll) hosted by a third party The absence of which of the following would be the GREATEST concern regarding the contract?",
+    "options": [
       "Right-to-audit clause",
       "System availability requirements",
       "Confidentiality terms",
