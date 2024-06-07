@@ -315,14 +315,18 @@
       "To identify new risks and controls for the organization",
       "To ensure senior management is aware of the audit findings",
       "To verify that risks listed in the audit report have been properly mitigated",
-      "To align the management action plans with business requirements",
-      "An IS auditor is reviewing the contract for a customer relationship management (CRM) system containing personal identifiable information (Pll) hosted by a third party The absence of which of the following would be the GREATEST concern regarding the contract?",
+      "To align the management action plans with business requirements"
+       ],
+    "correct": "To verify that risks listed in the audit report have been properly mitigated"
+  },
+  {
+      "question": "An IS auditor is reviewing the contract for a customer relationship management (CRM) system containing personal identifiable information (Pll) hosted by a third party The absence of which of the following would be the GREATEST concern regarding the contract?",
       "Right-to-audit clause",
       "System availability requirements",
       "Confidentiality terms",
       "Service level agreements (SLAs)"
     ],
-    "correct": "To verify that risks listed in the audit report have been properly mitigated"
+    "correct": "Confidentiality terms"
   },
   {
     "question": "During an audit of a data center with updated technology, the auditee indicates that environmental controls are the same as those used in the previous environment The IS auditor should FIRST",
