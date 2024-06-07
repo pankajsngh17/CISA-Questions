@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .feedback {
+      margin-top: 20px;
+      color: green;
+    }
+    .feedback.incorrect {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div id="quiz-container"></div>
+  <div class="feedback" id="feedback"></div>
+  <button onclick="loadNextQuestion()">Next Question</button>
+
+  <script>
+    let questions = [];
+    let currentQuestionIndex = -1;
+
+    // Fetch the quiz data
+    fetch('quiz_data.json')
+      .then(response => response.json())
+      .then(data => {
+        questions = data;
+        loadNextQuestion();
+      })
+      .catch(error => console.error('Error loading quiz data:', error));
+
+    function loadNextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex >= questions.length) {
+        document.getElementById('quiz-container').innerHTML = '<p>Quiz completed!</p>';
+        document.getElementById('feedback').innerHTML = '';
+        return;
+      }
+
+      const question = questions[currentQuestionIndex];
+      const container = document.getElementById('quiz-container');
+      container.innerHTML = `
+        <div class="question">
+          <p>${question.question}</p>
+          ${question.options.map(option => `<label><input type="radio" name="option" value="${option}"> ${option}</label><br>`).join('')}
+        </div>
+        <button onclick="submitAnswer()">Submit Answer</button>
+        <input type="hidden" id="question" value="${question.question}">
+      `;
+      document.getElementById('feedback').innerHTML = '';
+    }
+
+    function submitAnswer() {
+      const selectedOption = document.querySelector('input[name="option"]:checked');
+      if (selectedOption) {
+        const question = questions[currentQuestionIndex];
+        if (selectedOption.value === question.correct) {
+          document.getElementById('feedback').innerHTML = 'Correct!';
+          document.getElementById('feedback').classList.remove('incorrect');
+        } else {
+          document.getElementById('feedback').innerHTML = `Incorrect! The correct answer is: ${question.correct}`;
+          document.getElementById('feedback').classList.add('incorrect');
+        }
+      } else {
+        document.getElementById('feedback').innerHTML = 'Please select an option!';
+        document.getElementById('feedback').classList.add('incorrect');
+      }
+    }
+  </script>
+</body>
+</html>
