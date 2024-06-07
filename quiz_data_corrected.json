@@ -164,7 +164,7 @@
     "options": [
       "Tabletop test results",
       "Simulation test results",
-      "Full operational test results ",
+      "Full operational test results",
       "Walk-through test results"
     ],
     "correct": "Full operational test results"
