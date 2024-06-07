@@ -201,16 +201,16 @@
     function checkAnswer(selectedOption, index) {
       const correctAnswer = questions[currentQuestionIndex].correct;
       const selectedElement = document.getElementById(`option${index}`);
+      const correctIndex = questions[currentQuestionIndex].options.indexOf(correctAnswer);
+      const correctElement = document.getElementById(`option${correctIndex}`);
+
       if (selectedOption === correctAnswer) {
         selectedElement.classList.add('correct');
         score++;
         updateScoreCounter();
       } else {
         selectedElement.classList.add('incorrect');
-        const correctIndex = questions[currentQuestionIndex].options.indexOf(correctAnswer);
-        const correctElement = document.getElementById(`option${correctIndex}`);
         correctElement.classList.add('correct');
-        correctElement.style.fontWeight = 'bold';
       }
 
       // Disable all options after selection
