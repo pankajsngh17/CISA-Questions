@@ -15,11 +15,7 @@
       align-items: center;
       height: 100vh;
       margin: 0;
-    }
-
-    h1 {
-      color: #333;
-      text-align: center;
+      padding: 10px;
     }
 
     .container {
@@ -27,11 +23,43 @@
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      max-width: 600px;
+      max-width: 400px;
       width: 100%;
+      text-align: center;
     }
 
-    .question {
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group input {
+      width: 60px;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-right: 10px;
+    }
+
+    .input-group button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .input-group button:hover {
+      background-color: #0056b3;
+    }
+
+    .question-container {
       margin-bottom: 20px;
     }
 
@@ -42,29 +70,32 @@
     }
 
     .option {
-      margin: 10px 0;
+      background: #f4f4f4;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .option:hover {
+      background: #e0e0e0;
     }
 
     .correct {
-      color: green;
+      background-color: #c8e6c9;
     }
 
     .incorrect {
-      color: red;
-    }
-
-    .button {
-      margin-top: 20px;
+      background-color: #ffcdd2;
     }
 
     .buttons {
       display: flex;
       justify-content: space-between;
-      margin-top: 20px;
     }
 
-    .button,
-    button {
+    .button {
       padding: 10px 20px;
       border: none;
       border-radius: 5px;
@@ -76,52 +107,37 @@
       text-align: center;
     }
 
-    .button:hover,
-    button:hover {
+    .button:hover {
       background-color: #0056b3;
     }
 
     #reset-button {
       background-color: #dc3545;
       width: 100%;
+      margin-top: 20px;
     }
 
     #reset-button:hover {
       background-color: #c82333;
     }
 
-    #start-question {
-      width: 80px;
-      margin-right: 10px;
-      padding: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    @media (max-width: 600px) {
-      .buttons {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .button,
-      button {
-        width: 100%;
-        margin-top: 10px;
-      }
+    #question-counter,
+    #score-counter {
+      margin-bottom: 20px;
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Quiz</h1>
-    <div>
-      <label for="start-question">Start with question:</label>
+    <div class="input-group">
+      <label for="start-question">Enter the question number to start with:</label>
       <input type="number" id="start-question" min="1" value="1">
-      <button class="button" onclick="startQuiz()">Go</button>
+      <button onclick="startQuiz()">Start Quiz</button>
     </div>
     <div id="question-counter"></div>
-    <div id="quiz-container"></div>
+    <div class="question-container" id="quiz-container"></div>
     <div id="feedback"></div>
     <div id="score-counter">Score: 0</div>
     <div class="buttons">
@@ -158,7 +174,6 @@
     }
 
     function loadQuestion() {
-      console.log('Loading question:', currentQuestionIndex);
       if (currentQuestionIndex >= questions.length) {
         document.getElementById('quiz-container').innerHTML = '<p>Quiz completed!</p>';
         document.getElementById('next-button').style.display = 'none';
@@ -173,40 +188,32 @@
           <h2>${question.question}</h2>
           <ul class="options">
             ${question.options.map((option, index) => `
-              <li class="option">
-                <input type="radio" name="option" id="option${index}" value="${option}">
-                <label for="option${index}" id="label${index}">${option}</label>
-              </li>
+              <li class="option" id="option${index}" onclick="checkAnswer('${option}', ${index})">${option}</li>
             `).join('')}
           </ul>
         </div>
       `;
 
-      document.querySelectorAll('input[name="option"]').forEach((input, index) => {
-        input.addEventListener('change', () => checkAnswer(input.value, index));
-      });
-
       updateQuestionCounter();
     }
 
     function checkAnswer(selectedOption, index) {
-      console.log('Selected option:', selectedOption);
       const correctAnswer = questions[currentQuestionIndex].correct;
-      const label = document.getElementById(`label${index}`);
+      const selectedElement = document.getElementById(`option${index}`);
       if (selectedOption === correctAnswer) {
-        label.classList.add('correct');
+        selectedElement.classList.add('correct');
         score++;
         updateScoreCounter();
       } else {
-        label.classList.add('incorrect');
+        selectedElement.classList.add('incorrect');
         const correctIndex = questions[currentQuestionIndex].options.indexOf(correctAnswer);
-        const correctLabel = document.getElementById(`label${correctIndex}`);
-        correctLabel.classList.add('correct');
+        const correctElement = document.getElementById(`option${correctIndex}`);
+        correctElement.classList.add('correct');
       }
 
-      // Disable all inputs after selection
-      document.querySelectorAll('input[name="option"]').forEach(input => {
-        input.disabled = true;
+      // Disable all options after selection
+      document.querySelectorAll('.option').forEach(option => {
+        option.onclick = null;
       });
     }
 
