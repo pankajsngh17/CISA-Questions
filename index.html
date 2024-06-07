@@ -12,26 +12,27 @@
 <body>
   <h1>Quiz</h1>
   <div id="quiz-container"></div>
-  <button id="next-button" class="button">Next Question</button>
+  <div id="feedback"></div>
+  <button id="prev-button" class="button" onclick="prevQuestion()">Previous Question</button>
+  <button id="next-button" class="button" onclick="nextQuestion()">Next Question</button>
   <script>
     let currentQuestionIndex = 0;
     let questions = [];
-
-    document.getElementById('next-button').addEventListener('click', loadNextQuestion);
 
     // Fetch the quiz data
     fetch('quiz_data_corrected.json')
       .then(response => response.json())
       .then(data => {
         questions = data;
-        loadNextQuestion();
+        loadQuestion();
       })
       .catch(error => console.error('Error fetching the quiz data:', error));
 
-    function loadNextQuestion() {
+    function loadQuestion() {
       if (currentQuestionIndex >= questions.length) {
         document.getElementById('quiz-container').innerHTML = '<p>Quiz completed!</p>';
         document.getElementById('next-button').style.display = 'none';
+        document.getElementById('prev-button').style.display = 'none';
         return;
       }
 
@@ -41,12 +42,48 @@
         <div class="question">
           <h2>${question.question}</h2>
           <ul class="options">
-            ${question.options.map(option => `<li class="option">${option}</li>`).join('')}
+            ${question.options.map((option, index) => `
+              <li class="option">
+                <input type="radio" name="option" id="option${index}" value="${option}">
+                <label for="option${index}">${option}</label>
+              </li>
+            `).join('')}
           </ul>
+          <button class="button" onclick="checkAnswer()">Submit Answer</button>
         </div>
       `;
+      document.getElementById('feedback').innerHTML = '';
+    }
 
-      currentQuestionIndex++;
+    function checkAnswer() {
+      const selectedOption = document.querySelector('input[name="option"]:checked');
+      if (!selectedOption) {
+        document.getElementById('feedback').innerHTML = '<p>Please select an answer.</p>';
+        return;
+      }
+
+      const answer = selectedOption.value;
+      const correctAnswer = questions[currentQuestionIndex].correct;
+
+      if (answer === correctAnswer) {
+        document.getElementById('feedback').innerHTML = '<p>Correct!</p>';
+      } else {
+        document.getElementById('feedback').innerHTML = `<p>Incorrect! The correct answer is: ${correctAnswer}</p>`;
+      }
+    }
+
+    function nextQuestion() {
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        loadQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        loadQuestion();
+      }
     }
   </script>
 </body>
