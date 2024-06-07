@@ -142,6 +142,7 @@
     <div id="question-counter"></div>
     <div class="question-container" id="quiz-container"></div>
     <div id="feedback"></div>
+    <div id="correct-answer"></div>
     <div id="score-counter">Score: 0</div>
     <div class="buttons">
       <button id="prev-button" class="button" onclick="prevQuestion()">Previous</button>
@@ -195,9 +196,9 @@
             `).join('')}
           </ul>
         </div>
-        <div id="correct-answer" style="display: none;"></div>
       `;
 
+      document.getElementById('correct-answer').innerHTML = '';
       updateQuestionCounter();
     }
 
