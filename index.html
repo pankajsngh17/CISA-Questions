@@ -14,7 +14,6 @@
 <body>
   <h1>Quiz</h1>
   <div id="quiz-container"></div>
-  <div id="feedback"></div>
   <button id="prev-button" class="button" onclick="prevQuestion()">Previous Question</button>
   <button id="next-button" class="button" onclick="nextQuestion()">Next Question</button>
   <script>
@@ -46,14 +45,17 @@
           <ul class="options">
             ${question.options.map((option, index) => `
               <li class="option">
-                <input type="radio" name="option" id="option${index}" value="${option}" onclick="checkAnswer('${option}', ${index})">
+                <input type="radio" name="option" id="option${index}" value="${option}">
                 <label for="option${index}" id="label${index}">${option}</label>
               </li>
             `).join('')}
           </ul>
         </div>
       `;
-      document.getElementById('feedback').innerHTML = '';
+
+      document.querySelectorAll('input[name="option"]').forEach((input, index) => {
+        input.addEventListener('change', () => checkAnswer(input.value, index));
+      });
     }
 
     function checkAnswer(selectedOption, index) {
@@ -67,6 +69,11 @@
         const correctLabel = document.getElementById(`label${correctIndex}`);
         correctLabel.classList.add('correct');
       }
+
+      // Disable all inputs after selection
+      document.querySelectorAll('input[name="option"]').forEach(input => {
+        input.disabled = true;
+      });
     }
 
     function nextQuestion() {
