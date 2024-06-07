@@ -1,30 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quiz</title>
   <style>
-    .question { margin-bottom: 20px; }
-    .options { list-style-type: none; padding: 0; }
-    .option { margin: 5px 0; }
-    .correct { color: green; }
-    .incorrect { color: red; }
-    .button { margin-top: 20px; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #f4f4f9;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+
+    .options {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .option {
+      margin: 10px 0;
+    }
+
+    .correct {
+      color: green;
+    }
+
+    .incorrect {
+      color: red;
+    }
+
+    .button {
+      margin-top: 20px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .button,
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover,
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #reset-button {
+      background-color: #dc3545;
+    }
+
+    #reset-button:hover {
+      background-color: #c82333;
+    }
+
+    @media (max-width: 600px) {
+      .buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .button,
+      button {
+        width: 100%;
+        margin-top: 10px;
+      }
+    }
   </style>
 </head>
 <body>
   <h1>Quiz</h1>
-  <div>
-    <label for="start-question">Enter the question number to start with:</label>
-    <input type="number" id="start-question" min="1" value="1">
-    <button onclick="startQuiz()">Start Quiz</button>
+  <div class="container">
+    <div>
+      <label for="start-question">Enter the question number to start with:</label>
+      <input type="number" id="start-question" min="1" value="1">
+      <button onclick="startQuiz()">Start Quiz</button>
+    </div>
+    <div id="question-counter"></div>
+    <div id="quiz-container"></div>
+    <div id="feedback"></div>
+    <div id="score-counter">Score: 0</div>
+    <div class="buttons">
+      <button id="prev-button" class="button" onclick="prevQuestion()">Previous Question</button>
+      <button id="next-button" class="button" onclick="nextQuestion()">Next Question</button>
+      <button id="reset-button" class="button" onclick="resetScore()">Reset Score</button>
+    </div>
   </div>
-  <div id="question-counter"></div>
-  <div id="quiz-container"></div>
-  <div id="feedback"></div>
-  <div id="score-counter">Score: 0</div>
-  <button id="prev-button" class="button" onclick="prevQuestion()">Previous Question</button>
-  <button id="next-button" class="button" onclick="nextQuestion()">Next Question</button>
-  <button id="reset-button" class="button" onclick="resetScore()">Reset Score</button>
   <script>
     let currentQuestionIndex = 0;
     let questions = [];
