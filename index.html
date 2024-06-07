@@ -1,79 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz App</title>
+  <title>Quiz</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    .question {
-      margin-bottom: 20px;
-    }
-    .feedback {
-      margin-top: 20px;
-      color: green;
-    }
-    .feedback.incorrect {
-      color: red;
-    }
+    .question { margin-bottom: 20px; }
+    .options { list-style-type: none; padding: 0; }
+    .option { margin: 5px 0; }
+    .button { margin-top: 20px; }
   </style>
 </head>
 <body>
+  <h1>Quiz</h1>
   <div id="quiz-container"></div>
-  <div class="feedback" id="feedback"></div>
-  <button onclick="loadNextQuestion()">Next Question</button>
-
+  <button id="next-button" class="button">Next Question</button>
   <script>
+    let currentQuestionIndex = 0;
     let questions = [];
-    let currentQuestionIndex = -1;
+
+    document.getElementById('next-button').addEventListener('click', loadNextQuestion);
 
     // Fetch the quiz data
-    fetch('quiz_data.json')
+    fetch('quiz_data_corrected.json')
       .then(response => response.json())
       .then(data => {
         questions = data;
         loadNextQuestion();
       })
-      .catch(error => console.error('Error loading quiz data:', error));
+      .catch(error => console.error('Error fetching the quiz data:', error));
 
     function loadNextQuestion() {
-      currentQuestionIndex++;
       if (currentQuestionIndex >= questions.length) {
         document.getElementById('quiz-container').innerHTML = '<p>Quiz completed!</p>';
-        document.getElementById('feedback').innerHTML = '';
+        document.getElementById('next-button').style.display = 'none';
         return;
       }
 
       const question = questions[currentQuestionIndex];
-      const container = document.getElementById('quiz-container');
-      container.innerHTML = `
+      const quizContainer = document.getElementById('quiz-container');
+      quizContainer.innerHTML = `
         <div class="question">
-          <p>${question.question}</p>
-          ${question.options.map(option => `<label><input type="radio" name="option" value="${option}"> ${option}</label><br>`).join('')}
+          <h2>${question.question}</h2>
+          <ul class="options">
+            ${question.options.map(option => `<li class="option">${option}</li>`).join('')}
+          </ul>
         </div>
-        <button onclick="submitAnswer()">Submit Answer</button>
-        <input type="hidden" id="question" value="${question.question}">
       `;
-      document.getElementById('feedback').innerHTML = '';
-    }
 
-    function submitAnswer() {
-      const selectedOption = document.querySelector('input[name="option"]:checked');
-      if (selectedOption) {
-        const question = questions[currentQuestionIndex];
-        if (selectedOption.value === question.correct) {
-          document.getElementById('feedback').innerHTML = 'Correct!';
-          document.getElementById('feedback').classList.remove('incorrect');
-        } else {
-          document.getElementById('feedback').innerHTML = `Incorrect! The correct answer is: ${question.correct}`;
-          document.getElementById('feedback').classList.add('incorrect');
-        }
-      } else {
-        document.getElementById('feedback').innerHTML = 'Please select an option!';
-        document.getElementById('feedback').classList.add('incorrect');
-      }
+      currentQuestionIndex++;
     }
   </script>
 </body>
