@@ -15,7 +15,7 @@
   <h1>Quiz</h1>
   <div>
     <label for="start-question">Enter the question number to start with:</label>
-    <input type="number" id="start-question" min="1" max="460" value="1">
+    <input type="number" id="start-question" min="1" value="1">
     <button onclick="startQuiz()">Start Quiz</button>
   </div>
   <div id="question-counter"></div>
@@ -39,9 +39,9 @@
       .catch(error => console.error('Error fetching the quiz data:', error));
 
     function startQuiz() {
-      const startQuestionNumber = parseInt(document.getElementById('start-question').value);
-      if (startQuestionNumber >= 1 && startQuestionNumber <= questions.length) {
-        currentQuestionIndex = startQuestionNumber - 1;
+      const startQuestionNumber = parseInt(document.getElementById('start-question').value) - 1;
+      if (startQuestionNumber >= 0 && startQuestionNumber < questions.length) {
+        currentQuestionIndex = startQuestionNumber;
         loadQuestion();
         updateQuestionCounter();
         document.getElementById('prev-button').style.display = 'inline';
