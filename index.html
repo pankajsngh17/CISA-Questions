@@ -6,6 +6,8 @@
     .question { margin-bottom: 20px; }
     .options { list-style-type: none; padding: 0; }
     .option { margin: 5px 0; }
+    .correct { color: green; }
+    .incorrect { color: red; }
     .button { margin-top: 20px; }
   </style>
 </head>
@@ -29,7 +31,6 @@
       .catch(error => console.error('Error fetching the quiz data:', error));
 
     function loadQuestion() {
-      console.log('Loading question:', currentQuestionIndex);
       if (currentQuestionIndex >= questions.length) {
         document.getElementById('quiz-container').innerHTML = '<p>Quiz completed!</p>';
         document.getElementById('next-button').style.display = 'none';
@@ -45,31 +46,26 @@
           <ul class="options">
             ${question.options.map((option, index) => `
               <li class="option">
-                <input type="radio" name="option" id="option${index}" value="${option}">
-                <label for="option${index}">${option}</label>
+                <input type="radio" name="option" id="option${index}" value="${option}" onclick="checkAnswer('${option}', ${index})">
+                <label for="option${index}" id="label${index}">${option}</label>
               </li>
             `).join('')}
           </ul>
-          <button class="button" onclick="checkAnswer()">Submit Answer</button>
         </div>
       `;
       document.getElementById('feedback').innerHTML = '';
     }
 
-    function checkAnswer() {
-      const selectedOption = document.querySelector('input[name="option"]:checked');
-      if (!selectedOption) {
-        document.getElementById('feedback').innerHTML = '<p>Please select an answer.</p>';
-        return;
-      }
-
-      const answer = selectedOption.value;
+    function checkAnswer(selectedOption, index) {
       const correctAnswer = questions[currentQuestionIndex].correct;
-
-      if (answer === correctAnswer) {
-        document.getElementById('feedback').innerHTML = '<p>Correct!</p>';
+      const label = document.getElementById(`label${index}`);
+      if (selectedOption === correctAnswer) {
+        label.classList.add('correct');
       } else {
-        document.getElementById('feedback').innerHTML = `<p>Incorrect! The correct answer is: ${correctAnswer}</p>`;
+        label.classList.add('incorrect');
+        const correctIndex = questions[currentQuestionIndex].options.indexOf(correctAnswer);
+        const correctLabel = document.getElementById(`label${correctIndex}`);
+        correctLabel.classList.add('correct');
       }
     }
 
