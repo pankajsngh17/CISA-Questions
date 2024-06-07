@@ -5,28 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quiz</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+    
     body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 10px;
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f7f9fc;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      background-color: #f4f4f9;
+      height: 100vh;
+      margin: 0;
     }
 
     h1 {
       color: #333;
+      text-align: center;
     }
 
     .container {
       background: #fff;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       max-width: 600px;
       width: 100%;
-      text-align: center;
     }
 
     .question {
@@ -71,6 +73,7 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
       width: 48%;
+      text-align: center;
     }
 
     .button:hover,
@@ -88,8 +91,11 @@
     }
 
     #start-question {
-      width: 60px;
+      width: 80px;
       margin-right: 10px;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
     }
 
     @media (max-width: 600px) {
@@ -107,12 +113,12 @@
   </style>
 </head>
 <body>
-  <h1>Quiz</h1>
   <div class="container">
+    <h1>Quiz</h1>
     <div>
       <label for="start-question">Start with question:</label>
       <input type="number" id="start-question" min="1" value="1">
-      <button onclick="startQuiz()">Go</button>
+      <button class="button" onclick="startQuiz()">Go</button>
     </div>
     <div id="question-counter"></div>
     <div id="quiz-container"></div>
