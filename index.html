@@ -24,6 +24,7 @@
   <div id="score-counter">Score: 0</div>
   <button id="prev-button" class="button" onclick="prevQuestion()">Previous Question</button>
   <button id="next-button" class="button" onclick="nextQuestion()">Next Question</button>
+  <button id="reset-button" class="button" onclick="resetScore()">Reset Score</button>
   <script>
     let currentQuestionIndex = 0;
     let questions = [];
@@ -116,6 +117,12 @@
         currentQuestionIndex--;
         loadQuestion();
       }
+    }
+
+    function resetScore() {
+      score = 0;
+      updateScoreCounter();
+      loadQuestion();
     }
 
     function updateQuestionCounter() {
