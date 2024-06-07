@@ -129,6 +129,19 @@
       margin-bottom: 20px;
       font-weight: 600;
     }
+
+    #review-container {
+      display: none;
+      text-align: left;
+    }
+
+    .review-question {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      padding: 10px;
+    }
   </style>
 </head>
 <body>
@@ -148,11 +161,17 @@
       <button id="next-button" class="button" onclick="nextQuestion()">Next</button>
     </div>
     <button id="reset-button" class="button" onclick="resetScore()">Reset Score</button>
+    <button id="review-button" class="button" onclick="showReview()">See Incorrect Answers</button>
+    <div id="review-container">
+      <h2>Review Incorrect Answers</h2>
+      <div id="review-questions"></div>
+    </div>
   </div>
   <script>
     let currentQuestionIndex = 0;
     let questions = [];
     let score = 0;
+    let incorrectAnswers = [];
 
     // Fetch the quiz data
     fetch('quiz_data_corrected.json')
@@ -213,6 +232,11 @@
       } else {
         selectedElement.classList.add('incorrect');
         correctElement.classList.add('correct');
+        incorrectAnswers.push({
+          question: questions[currentQuestionIndex].question,
+          selectedOption: selectedOption,
+          correctAnswer: correctAnswer
+        });
       }
 
       // Disable all options after selection
@@ -237,10 +261,28 @@
 
     function resetScore() {
       score = 0;
+      incorrectAnswers = [];
       updateScoreCounter();
       loadQuestion();
+      document.getElementById('review-container').style.display = 'none';
     }
 
+    function showReview() {
+      const reviewContainer = document.getElementById('review-container');
+      const reviewQuestions = document.getElementById('review-questions');
+      reviewQuestions.innerHTML = '';
+      incorrectAnswers.forEach((item, index) => {
+        reviewQuestions.innerHTML += `
+          <div class="review-question">
+            <h3>Question ${index + 1}</h3>
+            <p>${item.question}</p>
+            <p><strong>Your Answer:</strong> ${item.selectedOption}</p>
+            <p><strong>Correct Answer:</strong> ${item.correctAnswer}</p>
+          </div>
+        `;
+      });
+      reviewContainer.style.display = 'block';
+    }
     function updateQuestionCounter() {
       document.getElementById('question-counter').innerHTML = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
     }
@@ -255,3 +297,5 @@
   </script>
 </body>
 </html>
+
+   
