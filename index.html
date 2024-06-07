@@ -8,7 +8,7 @@
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 20px;
+      padding: 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -21,11 +21,12 @@
 
     .container {
       background: #fff;
-      padding: 20px;
+      padding: 15px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      max-width: 800px;
+      max-width: 600px;
       width: 100%;
+      text-align: center;
     }
 
     .question {
@@ -35,6 +36,7 @@
     .options {
       list-style-type: none;
       padding: 0;
+      text-align: left;
     }
 
     .option {
@@ -68,6 +70,7 @@
       color: white;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      width: 48%;
     }
 
     .button:hover,
@@ -77,10 +80,16 @@
 
     #reset-button {
       background-color: #dc3545;
+      width: 100%;
     }
 
     #reset-button:hover {
       background-color: #c82333;
+    }
+
+    #start-question {
+      width: 60px;
+      margin-right: 10px;
     }
 
     @media (max-width: 600px) {
@@ -101,19 +110,19 @@
   <h1>Quiz</h1>
   <div class="container">
     <div>
-      <label for="start-question">Enter the question number to start with:</label>
+      <label for="start-question">Start with question:</label>
       <input type="number" id="start-question" min="1" value="1">
-      <button onclick="startQuiz()">Start Quiz</button>
+      <button onclick="startQuiz()">Go</button>
     </div>
     <div id="question-counter"></div>
     <div id="quiz-container"></div>
     <div id="feedback"></div>
     <div id="score-counter">Score: 0</div>
     <div class="buttons">
-      <button id="prev-button" class="button" onclick="prevQuestion()">Previous Question</button>
-      <button id="next-button" class="button" onclick="nextQuestion()">Next Question</button>
-      <button id="reset-button" class="button" onclick="resetScore()">Reset Score</button>
+      <button id="prev-button" class="button" onclick="prevQuestion()">Previous</button>
+      <button id="next-button" class="button" onclick="nextQuestion()">Next</button>
     </div>
+    <button id="reset-button" class="button" onclick="resetScore()">Reset Score</button>
   </div>
   <script>
     let currentQuestionIndex = 0;
