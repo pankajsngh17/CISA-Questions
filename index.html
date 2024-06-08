@@ -189,10 +189,15 @@
     <div id="revision-container"></div>
   </div>
   <script>
+    if (!localStorage.getItem('username')) {
+      window.location.href = 'login.html';
+    }
+
     let currentQuestionIndex = 0;
     let questions = [];
     let score = 0;
-    let wrongAnswers = JSON.parse(localStorage.getItem('wrongAnswers')) || [];
+    const username = localStorage.getItem('username');
+    let wrongAnswers = JSON.parse(localStorage.getItem(username + '_wrongAnswers')) || [];
 
     fetch('quiz_data_corrected.json')
       .then(response => response.json())
@@ -260,7 +265,7 @@
           correct: correctAnswer,
           selected: selectedOption
         });
-        localStorage.setItem('wrongAnswers', JSON.stringify(wrongAnswers));
+        localStorage.setItem(username + '_wrongAnswers', JSON.stringify(wrongAnswers));
       }
 
       document.getElementById('correct-answer').style.display = 'block';
