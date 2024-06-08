@@ -257,4 +257,87 @@
         selectedElement.classList.add('correct');
         score++;
         updateScoreCounter();
+      } else {
+        selectedElement.classList.add('incorrect');
+        correctElement.classList.add('correct');
+        wrongAnswers.push({
+          question: questions[currentQuestionIndex].question,
+          options: questions[currentQuestionIndex].options,
+          correct: correctAnswer,
+          selected: selectedOption
+        });
+        localStorage.setItem(username + '_wrongAnswers', JSON.stringify(wrongAnswers));
       }
+
+      document.getElementById('correct-answer').style.display = 'block';
+      document.getElementById('correct-answer').innerHTML = `Correct Answer: ${correctAnswer}`;
+
+      document.querySelectorAll('.option').forEach(option => {
+        option.onclick = null;
+      });
+    }
+
+    function nextQuestion() {
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        loadQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        loadQuestion();
+      }
+    }
+
+    function resetScore() {
+      score = 0;
+      updateScoreCounter();
+      loadQuestion();
+    }
+
+    function updateQuestionCounter() {
+      document.getElementById('question-counter').innerHTML = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+    }
+
+    function updateScoreCounter() {
+      document.getElementById('score-counter').innerHTML = `Score: ${score}`;
+    }
+
+    function showRevisions() {
+      const revisionContainer = document.getElementById('revision-container');
+      revisionContainer.innerHTML = '';
+
+      if (wrongAnswers.length > 0) {
+        wrongAnswers.forEach(answer => {
+          const card = document.createElement('div');
+          card.classList.add('revision-card');
+          card.innerHTML = `
+            <h3>${answer.question}</h3>
+            <ul>
+              ${answer.options.map(option => `
+                <li class="${option === answer.correct ? 'correct' : option === answer.selected ? 'incorrect' : ''}">${option}</li>
+              `).join('')}
+            </ul>
+          `;
+          revisionContainer.appendChild(card);
+        });
+        revisionContainer.style.display = 'block';
+      } else {
+        revisionContainer.innerHTML = '<p>No incorrect answers to review.</p>';
+        revisionContainer.style.display = 'block';
+      }
+    }
+
+    function displayStoredRevisions() {
+      if (wrongAnswers.length > 0) {
+        showRevisions();
+      }
+    }
+
+    document.getElementById('prev-button').style.display = 'none';
+    document.getElementById('next-button').style.display = 'none';
+  </script>
+</body>
+</html>
