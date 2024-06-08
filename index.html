@@ -192,13 +192,14 @@
     let currentQuestionIndex = 0;
     let questions = [];
     let score = 0;
-    let wrongAnswers = [];
+    let wrongAnswers = JSON.parse(localStorage.getItem('wrongAnswers')) || [];
 
     fetch('quiz_data_corrected.json')
       .then(response => response.json())
       .then(data => {
         questions = data;
         updateScoreCounter();
+        displayStoredRevisions();
       })
       .catch(error => console.error('Error fetching the quiz data:', error));
 
@@ -259,6 +260,7 @@
           correct: correctAnswer,
           selected: selectedOption
         });
+        localStorage.setItem('wrongAnswers', JSON.stringify(wrongAnswers));
       }
 
       document.getElementById('correct-answer').style.display = 'block';
@@ -319,6 +321,12 @@
       } else {
         revisionContainer.innerHTML = '<p>No incorrect answers to review.</p>';
         revisionContainer.style.display = 'block';
+      }
+    }
+
+    function displayStoredRevisions() {
+      if (wrongAnswers.length > 0) {
+        showRevisions();
       }
     }
 
