@@ -375,11 +375,12 @@
         answer.options.forEach(option => {
           const isCorrect = option === answer.correct;
           const isSelected = option === answer.selected;
-          const emoji = isCorrect ? '✅' : isSelected ? '❌' : '';
+          const emoji = isCorrect ? '✅' : isSelected ? '❌' : '•';
           message += `${emoji} ${option}\n`;
         });
         message += `\n*Correct Answer:* ${answer.correct}\n`;
         message += `*Your Answer:* ${answer.selected}\n\n`;
+        message += "--------------------\n\n";
       });
 
       const encodedMessage = encodeURIComponent(message);
