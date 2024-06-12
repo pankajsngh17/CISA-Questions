@@ -189,7 +189,7 @@
     <div class="question-container" id="quiz-container"></div>
     <div id="feedback"></div>
     <div id="correct-answer"></div>
-    <div id="score-counter">Score: 0</div>
+    <div id="score-counter">Score: 0/0</div>
     <div class="buttons">
       <button id="prev-button" class="button" onclick="prevQuestion()">Previous</button>
       <button id="next-button" class="button" onclick="nextQuestion()">Next</button>
@@ -203,6 +203,7 @@
     let currentQuestionIndex = 0;
     let questions = [];
     let score = 0;
+    let attemptedQuestions = 0;
     let wrongAnswers = [];
 
     fetch('quiz_data_corrected.json')
@@ -217,8 +218,12 @@
       const startQuestionNumber = parseInt(document.getElementById('start-question').value) - 1;
       if (startQuestionNumber >= 0 && startQuestionNumber < questions.length) {
         currentQuestionIndex = startQuestionNumber;
+        attemptedQuestions = 0;
+        score = 0;
+        wrongAnswers = [];
         loadQuestion();
         updateQuestionCounter();
+        updateScoreCounter();
         document.getElementById('prev-button').style.display = 'inline';
         document.getElementById('next-button').style.display = 'inline';
       } else {
@@ -257,10 +262,11 @@
       const correctIndex = questions[currentQuestionIndex].options.indexOf(correctAnswer);
       const correctElement = document.getElementById(`option${correctIndex}`);
 
+      attemptedQuestions++;
+
       if (selectedOption === correctAnswer) {
         selectedElement.classList.add('correct');
         score++;
-        updateScoreCounter();
       } else {
         selectedElement.classList.add('incorrect');
         correctElement.classList.add('correct');
@@ -278,6 +284,8 @@
       document.querySelectorAll('.option').forEach(option => {
         option.onclick = null;
       });
+
+      updateScoreCounter();
     }
 
     function nextQuestion() {
@@ -296,6 +304,8 @@
 
     function resetScore() {
       score = 0;
+      attemptedQuestions = 0;
+      wrongAnswers = [];
       updateScoreCounter();
       loadQuestion();
     }
@@ -305,7 +315,7 @@
     }
 
     function updateScoreCounter() {
-      document.getElementById('score-counter').innerHTML = `Score: ${score}`;
+      document.getElementById('score-counter').innerHTML = `Score: ${score}/${attemptedQuestions}`;
     }
 
     function showRevisions() {
