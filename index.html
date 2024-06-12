@@ -144,6 +144,16 @@
       background-color: #218838;
     }
 
+    #whatsapp-button {
+      background-color: #25D366;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    #whatsapp-button:hover {
+      background-color: #128C7E;
+    }
+
     #question-counter,
     #score-counter {
       margin-bottom: 20px;
@@ -197,6 +207,7 @@
     <button id="reset-button" class="button" onclick="resetScore()">Reset Score</button>
     <button id="revision-button" class="button" onclick="showRevisions()">Revision</button>
     <button id="random-button" class="button" onclick="shuffleQuestions()">Random Generate</button>
+    <button id="whatsapp-button" class="button" onclick="sendWhatsAppMessage()">Send to WhatsApp</button>
     <div id="revision-container"></div>
   </div>
   <script>
@@ -350,6 +361,24 @@
       }
       currentQuestionIndex = 0;
       loadQuestion();
+    }
+
+    function sendWhatsAppMessage() {
+      if (wrongAnswers.length === 0) {
+        alert('No incorrect answers to send.');
+        return;
+      }
+
+      let message = "Incorrect Questions:\n\n";
+      wrongAnswers.forEach((answer, index) => {
+        message += `${index + 1}. ${answer.question}\n`;
+        message += `Correct Answer: ${answer.correct}\n`;
+        message += `Your Answer: ${answer.selected}\n\n`;
+      });
+
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappURL = `https://wa.me/?text=${encodedMessage}`;
+      window.open(whatsappURL, '_blank');
     }
 
     document.getElementById('prev-button').style.display = 'none';
