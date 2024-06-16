@@ -337,7 +337,7 @@
       "Determine whether the controls are active",
       "Test selected controls."
     ],
-    "correct": "Test selected controls."
+    "correct": "Determine whether the controls are active"
   },
   {
     "question": "Which of the following BEST describes the role of the IS auditor in a control self-assessment (CSA)",
@@ -1979,7 +1979,7 @@
       "The business case does not include well-defined strategic benefits.",
       "Security requirements have not been defined."
     ],
-    "correct": "System requirements and expectations have not been clarified."
+    "correct": "The business case does not include well-defined strategic benefits."
   },
   {
     "question": "Which of the following poses the GREATEST risk to an organization related to system interfaces?",
@@ -2884,7 +2884,7 @@
       "Security requirements have not been defined.",
       "The business case does not include well-defined strategic benefits."
     ],
-    "correct": "System requirements and expectations have not been clarified"
+    "correct": "The business case does not include well-defined strategic benefits."
   },
   {
     "question": "An IT strategic plan that BEST leverages IT in achieving organizational goals will include",
